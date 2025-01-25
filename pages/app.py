@@ -62,6 +62,22 @@ if st.button("Analyze"):
         top_indices = np.argsort(feature_array)[::-1][:5]  # Top 5 features
         top_words = [(feature_names[i], feature_array[i]) for i in top_indices if feature_array[i] > 0]
 
+        # Generate explanation based on top influential words
+        if top_words:
+            word_list = ", ".join([f"'{word}'" for word, _ in top_words])
+            explanation = (
+                f"The review was classified as **{sentiment_label.lower()}** primarily due to the presence of words like {word_list}, "
+                f"which influenced the sentiment prediction."
+            )
+        else:
+            explanation = (
+                "The review was classified as **neutral** because it did not contain strong indicators of positive or negative sentiment."
+            )
+
+        # Display the explanation
+        st.write(explanation)
+
+        # Display top words if any
         if top_words:
             st.info("The following words had the most influence on the prediction:")
             for word, importance in top_words:
